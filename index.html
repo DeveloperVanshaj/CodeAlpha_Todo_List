@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do List App</title>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      .container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 300px;
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        box-sizing: border-box;
+      }
+
+      button {
+        width: 100%;
+        padding: 10px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      li {
+        margin-bottom: 5px;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border-radius: 4px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      li.completed {
+        text-decoration: line-through;
+        color: #888;
+      }
+
+      li button {
+        background-color: #f44336;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        margin-left: 10px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>To-Do List</h1>
+      <input type="text" id="taskInput" placeholder="Enter a task..." />
+      <button onclick="addTask()">Add Task</button>
+      <ul id="taskList">
+        <!-- Tasks will be added dynamically here -->
+      </ul>
+    </div>
+  </body>
+  <script>
+    // Get references to HTML elements
+    const taskInput = document.getElementById("taskInput");
+    const taskList = document.getElementById("taskList");
+
+    // Array to store tasks
+    let tasks = [];
+
+    // Function to render tasks
+    function renderTasks() {
+      // Clear the current list
+      taskList.innerHTML = "";
+
+      // Loop through tasks and add them to the list
+      tasks.forEach((task, index) => {
+        const li = document.createElement("li");
+        li.textContent = task.name;
+
+        // Add a 'completed' class if task is completed
+        if (task.completed) {
+          li.classList.add("completed");
+        }
+
+        // Button to delete task
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete";
+        deleteButton.onclick = () => {
+          tasks.splice(index, 1);
+          renderTasks();
+        };
+
+        // Toggle task completion
+        li.onclick = () => {
+          task.completed = !task.completed;
+          renderTasks();
+        };
+
+        li.appendChild(deleteButton);
+        taskList.appendChild(li);
+      });
+    }
+
+    // Function to add a new task
+    function addTask() {
+      const taskName = taskInput.value.trim();
+
+      if (taskName !== "") {
+        tasks.push({ name: taskName, completed: false });
+        taskInput.value = "";
+        renderTasks();
+      }
+    }
+
+    // Initial rendering of tasks
+    renderTasks();
+  </script>
+</html>
